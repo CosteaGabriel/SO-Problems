@@ -1,0 +1,598 @@
+	.file	"pipes.c"
+	.globl	pr
+	.data
+	.align 8
+pr:
+	.ascii "merge aici\12\0"
+	.comm	pfd, 8, 3
+	.comm	pfd2, 8, 3
+	.comm	pfd3, 8, 3
+	.section .rdata,"dr"
+.LC0:
+	.ascii "r\0"
+.LC1:
+	.ascii "date.txt\0"
+.LC2:
+	.ascii "Doesn't open date.txt\0"
+	.text
+	.globl	parent_write
+	.def	parent_write;	.scl	2;	.type	32;	.endef
+	.seh_proc	parent_write
+parent_write:
+	pushq	%rbp
+	.seh_pushreg	%rbp
+	pushq	%rdi
+	.seh_pushreg	%rdi
+	subq	$264, %rsp
+	.seh_stackalloc	264
+	leaq	128(%rsp), %rbp
+	.seh_setframe	%rbp, 128
+	.seh_endprologue
+	movq	$0, -96(%rbp)
+	leaq	-88(%rbp), %rdx
+	movl	$0, %eax
+	movl	$11, %ecx
+	movq	%rdx, %rdi
+	rep stosq
+	movq	%rdi, %rdx
+	movl	%eax, (%rdx)
+	addq	$4, %rdx
+	leaq	.LC0(%rip), %rdx
+	leaq	.LC1(%rip), %rcx
+	call	fopen
+	movq	%rax, 120(%rbp)
+	cmpq	$0, 120(%rbp)
+	jne	.L3
+	leaq	.LC2(%rip), %rcx
+	call	puts
+	jmp	.L3
+.L4:
+	leaq	16(%rbp), %rdx
+	leaq	-96(%rbp), %rax
+	movq	%rax, %rcx
+	call	strcat
+.L3:
+	movq	120(%rbp), %rdx
+	leaq	16(%rbp), %rax
+	movq	%rdx, %r8
+	movl	$100, %edx
+	movq	%rax, %rcx
+	call	fgets
+	testq	%rax, %rax
+	jne	.L4
+	leaq	pfd(%rip), %rax
+	movl	4(%rax), %eax
+	leaq	-96(%rbp), %rdx
+	movl	$100, %r8d
+	movl	%eax, %ecx
+	call	write
+	movq	120(%rbp), %rax
+	movq	%rax, %rcx
+	call	fclose
+	nop
+	addq	$264, %rsp
+	popq	%rdi
+	popq	%rbp
+	ret
+	.seh_endproc
+	.section .rdata,"dr"
+.LC3:
+	.ascii "\0"
+	.text
+	.globl	child_1_ReadAndWrite
+	.def	child_1_ReadAndWrite;	.scl	2;	.type	32;	.endef
+	.seh_proc	child_1_ReadAndWrite
+child_1_ReadAndWrite:
+	pushq	%rbp
+	.seh_pushreg	%rbp
+	pushq	%rdi
+	.seh_pushreg	%rdi
+	pushq	%rbx
+	.seh_pushreg	%rbx
+	subq	$2208, %rsp
+	.seh_stackalloc	2208
+	leaq	128(%rsp), %rbp
+	.seh_setframe	%rbp, 128
+	.seh_endprologue
+	movl	$0, 2072(%rbp)
+	movq	$0, 1040(%rbp)
+	leaq	1048(%rbp), %rdx
+	movl	$0, %eax
+	movl	$127, %ecx
+	movq	%rdx, %rdi
+	rep stosq
+	leaq	pfd(%rip), %rax
+	movl	(%rax), %eax
+	leaq	928(%rbp), %rdx
+	movl	$104, %r8d
+	movl	%eax, %ecx
+	call	read
+	movzbl	.LC3(%rip), %eax
+	movb	%al, -96(%rbp)
+	leaq	928(%rbp), %rdx
+	leaq	-96(%rbp), %rax
+	movq	%rax, %rcx
+	call	strcat
+	movl	$0, 2076(%rbp)
+	jmp	.L6
+.L8:
+	movl	2076(%rbp), %eax
+	cltq
+	movzbl	-96(%rbp,%rax), %eax
+	cmpb	$96, %al
+	jle	.L7
+	movl	2076(%rbp), %eax
+	cltq
+	movzbl	-96(%rbp,%rax), %eax
+	cmpb	$122, %al
+	jg	.L7
+	movl	2076(%rbp), %eax
+	cltq
+	movzbl	-96(%rbp,%rax), %edx
+	movl	2072(%rbp), %eax
+	cltq
+	movb	%dl, 1040(%rbp,%rax)
+	addl	$1, 2072(%rbp)
+.L7:
+	addl	$1, 2076(%rbp)
+.L6:
+	movl	2076(%rbp), %eax
+	movslq	%eax, %rbx
+	leaq	-96(%rbp), %rax
+	movq	%rax, %rcx
+	call	strlen
+	cmpq	%rax, %rbx
+	jb	.L8
+	leaq	pfd2(%rip), %rax
+	movl	4(%rax), %eax
+	leaq	1040(%rbp), %rdx
+	movl	$1024, %r8d
+	movl	%eax, %ecx
+	call	write
+	nop
+	addq	$2208, %rsp
+	popq	%rbx
+	popq	%rdi
+	popq	%rbp
+	ret
+	.seh_endproc
+	.section .rdata,"dr"
+.LC4:
+	.ascii "w\0"
+.LC5:
+	.ascii "statistica.txt\0"
+.LC6:
+	.ascii "couldn't open statistica.txt\0"
+.LC7:
+	.ascii "%c -> %d\15\12\0"
+.LC8:
+	.ascii "count = %d  string->%c\12\0"
+	.text
+	.globl	child_2_Write
+	.def	child_2_Write;	.scl	2;	.type	32;	.endef
+	.seh_proc	child_2_Write
+child_2_Write:
+	pushq	%rbp
+	.seh_pushreg	%rbp
+	pushq	%r15
+	.seh_pushreg	%r15
+	pushq	%r14
+	.seh_pushreg	%r14
+	pushq	%r13
+	.seh_pushreg	%r13
+	pushq	%r12
+	.seh_pushreg	%r12
+	pushq	%rsi
+	.seh_pushreg	%rsi
+	pushq	%rbx
+	.seh_pushreg	%rbx
+	subq	$320, %rsp
+	.seh_stackalloc	320
+	leaq	128(%rsp), %rbp
+	.seh_setframe	%rbp, 128
+	.seh_endprologue
+	movq	%rsp, %rax
+	movq	%rax, %rsi
+	movl	$0, 180(%rbp)
+	movl	$0, 176(%rbp)
+	leaq	.LC4(%rip), %rdx
+	leaq	.LC5(%rip), %rcx
+	call	fopen
+	movq	%rax, 168(%rbp)
+	cmpq	$0, 168(%rbp)
+	jne	.L10
+	leaq	.LC6(%rip), %rcx
+	call	puts
+	movl	$1, %ecx
+	call	exit
+.L10:
+	leaq	pfd2(%rip), %rax
+	movl	(%rax), %eax
+	leaq	32(%rbp), %rdx
+	movl	$104, %r8d
+	movl	%eax, %ecx
+	call	read
+	leaq	32(%rbp), %rax
+	movq	%rax, %rcx
+	call	strlen
+	subq	$1, %rax
+	movq	%rax, %rdx
+	subq	$1, %rdx
+	movq	%rdx, 160(%rbp)
+	movq	%rax, %r14
+	movl	$0, %r15d
+	movq	%rax, %r12
+	movl	$0, %r13d
+	salq	$2, %rax
+	addq	$3, %rax
+	addq	$15, %rax
+	shrq	$4, %rax
+	salq	$4, %rax
+	call	___chkstk_ms
+	subq	%rax, %rsp
+	leaq	32(%rsp), %rax
+	addq	$3, %rax
+	shrq	$2, %rax
+	salq	$2, %rax
+	movq	%rax, 152(%rbp)
+	movl	$0, 188(%rbp)
+	jmp	.L11
+.L12:
+	movq	152(%rbp), %rax
+	movl	188(%rbp), %edx
+	movslq	%edx, %rdx
+	movl	$0, (%rax,%rdx,4)
+	addl	$1, 188(%rbp)
+.L11:
+	movl	188(%rbp), %eax
+	movslq	%eax, %rbx
+	leaq	32(%rbp), %rax
+	movq	%rax, %rcx
+	call	strlen
+	cmpq	%rax, %rbx
+	jb	.L12
+	leaq	32(%rbp), %rdx
+	leaq	-80(%rbp), %rax
+	movq	%rax, %rcx
+	call	strcpy
+	movl	$0, 188(%rbp)
+	jmp	.L13
+.L18:
+	movl	$0, 184(%rbp)
+	jmp	.L14
+.L16:
+	movl	184(%rbp), %eax
+	cltq
+	movzbl	-80(%rbp,%rax), %edx
+	movl	188(%rbp), %eax
+	cltq
+	movzbl	32(%rbp,%rax), %eax
+	cmpb	%al, %dl
+	jne	.L15
+	movl	184(%rbp), %eax
+	cltq
+	movb	$42, -80(%rbp,%rax)
+	addl	$1, 180(%rbp)
+.L15:
+	addl	$1, 184(%rbp)
+.L14:
+	movl	184(%rbp), %eax
+	movslq	%eax, %rbx
+	leaq	32(%rbp), %rax
+	movq	%rax, %rcx
+	call	strlen
+	cmpq	%rax, %rbx
+	jb	.L16
+	cmpl	$0, 180(%rbp)
+	jle	.L17
+	movl	188(%rbp), %eax
+	cltq
+	movzbl	32(%rbp,%rax), %eax
+	movb	%al, 151(%rbp)
+	movsbl	151(%rbp), %edx
+	movl	180(%rbp), %ecx
+	movq	168(%rbp), %rax
+	movl	%ecx, %r9d
+	movl	%edx, %r8d
+	leaq	.LC7(%rip), %rdx
+	movq	%rax, %rcx
+	call	fprintf
+	movq	168(%rbp), %rax
+	movq	%rax, %rdx
+	movl	$10, %ecx
+	call	fputc
+	movq	152(%rbp), %rax
+	movl	188(%rbp), %edx
+	movslq	%edx, %rdx
+	movl	180(%rbp), %ecx
+	movl	%ecx, (%rax,%rdx,4)
+.L17:
+	movl	$0, 180(%rbp)
+	addl	$1, 188(%rbp)
+.L13:
+	movl	188(%rbp), %eax
+	movslq	%eax, %rbx
+	leaq	32(%rbp), %rax
+	movq	%rax, %rcx
+	call	strlen
+	cmpq	%rax, %rbx
+	jb	.L18
+	movl	$0, 188(%rbp)
+	jmp	.L19
+.L21:
+	movq	152(%rbp), %rax
+	movl	188(%rbp), %edx
+	movslq	%edx, %rdx
+	movl	(%rax,%rdx,4), %eax
+	cmpl	$1, %eax
+	jne	.L20
+	addl	$1, 176(%rbp)
+	movl	188(%rbp), %eax
+	cltq
+	movzbl	32(%rbp,%rax), %eax
+	movsbl	%al, %ecx
+	movq	152(%rbp), %rax
+	movl	188(%rbp), %edx
+	movslq	%edx, %rdx
+	movl	(%rax,%rdx,4), %eax
+	movl	%ecx, %r8d
+	movl	%eax, %edx
+	leaq	.LC8(%rip), %rcx
+	call	printf
+.L20:
+	addl	$1, 188(%rbp)
+.L19:
+	movl	188(%rbp), %eax
+	movslq	%eax, %rbx
+	leaq	32(%rbp), %rax
+	movq	%rax, %rcx
+	call	strlen
+	cmpq	%rax, %rbx
+	jb	.L21
+	movl	176(%rbp), %eax
+	movb	%al, -81(%rbp)
+	leaq	pfd3(%rip), %rax
+	movl	4(%rax), %eax
+	leaq	-81(%rbp), %rdx
+	movl	$1, %r8d
+	movl	%eax, %ecx
+	call	write
+	movq	168(%rbp), %rax
+	movq	%rax, %rcx
+	call	fclose
+	movq	%rsi, %rsp
+	nop
+	leaq	192(%rbp), %rsp
+	popq	%rbx
+	popq	%rsi
+	popq	%r12
+	popq	%r13
+	popq	%r14
+	popq	%r15
+	popq	%rbp
+	ret
+	.seh_endproc
+	.section .rdata,"dr"
+	.align 8
+.LC9:
+	.ascii "Numarul de caractere disctinte este: %d\12\0"
+	.text
+	.globl	parent_afis
+	.def	parent_afis;	.scl	2;	.type	32;	.endef
+	.seh_proc	parent_afis
+parent_afis:
+	pushq	%rbp
+	.seh_pushreg	%rbp
+	movq	%rsp, %rbp
+	.seh_setframe	%rbp, 0
+	subq	$48, %rsp
+	.seh_stackalloc	48
+	.seh_endprologue
+	leaq	pfd3(%rip), %rax
+	movl	(%rax), %eax
+	leaq	-4(%rbp), %rdx
+	movl	$4, %r8d
+	movl	%eax, %ecx
+	call	read
+	testq	%rax, %rax
+	jle	.L24
+	movl	-4(%rbp), %eax
+	movl	%eax, %edx
+	leaq	.LC9(%rip), %rcx
+	call	printf
+.L24:
+	nop
+	addq	$48, %rsp
+	popq	%rbp
+	ret
+	.seh_endproc
+	.def	__main;	.scl	2;	.type	32;	.endef
+	.section .rdata,"dr"
+.LC10:
+	.ascii "Eroare la creearea pipe-ului\0"
+.LC11:
+	.ascii "Eroare la fork\0"
+.LC12:
+	.ascii "waitpid\0"
+.LC13:
+	.ascii "exited, status=%d\12\0"
+	.text
+	.globl	main
+	.def	main;	.scl	2;	.type	32;	.endef
+	.seh_proc	main
+main:
+	pushq	%rbp
+	.seh_pushreg	%rbp
+	movq	%rsp, %rbp
+	.seh_setframe	%rbp, 0
+	subq	$96, %rsp
+	.seh_stackalloc	96
+	.seh_endprologue
+	movl	%ecx, 16(%rbp)
+	movq	%rdx, 24(%rbp)
+	call	__main
+	leaq	pfd(%rip), %rax
+	movq	%rax, %rcx
+	call	pipe
+	testl	%eax, %eax
+	js	.L26
+	leaq	pfd2(%rip), %rax
+	movq	%rax, %rcx
+	call	pipe
+	testl	%eax, %eax
+	js	.L26
+	leaq	pfd3(%rip), %rax
+	movq	%rax, %rcx
+	call	pipe
+	testl	%eax, %eax
+	jns	.L27
+.L26:
+	leaq	.LC10(%rip), %rcx
+	call	puts
+	movl	$1, %ecx
+	call	exit
+.L27:
+	call	fork
+	movl	%eax, -48(%rbp)
+	movl	-48(%rbp), %eax
+	testl	%eax, %eax
+	js	.L28
+	call	fork
+	movl	%eax, -44(%rbp)
+	movl	-44(%rbp), %eax
+	testl	%eax, %eax
+	jns	.L29
+.L28:
+	leaq	.LC11(%rip), %rcx
+	call	puts
+	movl	$1, %ecx
+	call	exit
+.L29:
+	movl	-48(%rbp), %eax
+	testl	%eax, %eax
+	jne	.L30
+	leaq	pfd(%rip), %rax
+	movl	4(%rax), %eax
+	movl	%eax, %ecx
+	call	close
+	leaq	pfd2(%rip), %rax
+	movl	(%rax), %eax
+	movl	%eax, %ecx
+	call	close
+	call	child_1_ReadAndWrite
+	leaq	pfd(%rip), %rax
+	movl	(%rax), %eax
+	movl	%eax, %ecx
+	call	close
+	leaq	pfd2(%rip), %rax
+	movl	4(%rax), %eax
+	movl	%eax, %ecx
+	call	close
+	movl	$0, %eax
+	jmp	.L34
+.L30:
+	movl	-44(%rbp), %eax
+	testl	%eax, %eax
+	jne	.L32
+	leaq	pfd2(%rip), %rax
+	movl	4(%rax), %eax
+	movl	%eax, %ecx
+	call	close
+	leaq	pfd3(%rip), %rax
+	movl	(%rax), %eax
+	movl	%eax, %ecx
+	call	close
+	call	child_2_Write
+	leaq	pfd2(%rip), %rax
+	movl	(%rax), %eax
+	movl	%eax, %ecx
+	call	close
+	leaq	pfd3(%rip), %rax
+	movl	4(%rax), %eax
+	movl	%eax, %ecx
+	call	close
+	movl	$0, %eax
+	jmp	.L34
+.L32:
+	leaq	pfd(%rip), %rax
+	movl	(%rax), %eax
+	movl	%eax, %ecx
+	call	close
+	call	parent_write
+	leaq	pfd(%rip), %rax
+	movl	4(%rax), %eax
+	movl	%eax, %ecx
+	call	close
+	leaq	pfd3(%rip), %rax
+	movl	4(%rax), %eax
+	movl	%eax, %ecx
+	call	close
+	call	parent_afis
+	leaq	pfd2(%rip), %rax
+	movl	(%rax), %eax
+	movl	%eax, %ecx
+	call	close
+	leaq	-52(%rbp), %rax
+	movq	%rax, %rdx
+	movl	-48(%rbp), %eax
+	movl	$10, %r8d
+	movl	%eax, %ecx
+	call	waitpid
+	movl	%eax, -4(%rbp)
+	leaq	-56(%rbp), %rax
+	movq	%rax, %rdx
+	movl	-44(%rbp), %eax
+	movl	$10, %r8d
+	movl	%eax, %ecx
+	call	waitpid
+	movl	%eax, -8(%rbp)
+	cmpl	$-1, -4(%rbp)
+	jne	.L33
+	cmpl	$-1, -8(%rbp)
+	jne	.L33
+	leaq	.LC12(%rip), %rcx
+	call	perror
+	movl	$1, %ecx
+	call	exit
+.L33:
+	movl	-52(%rbp), %eax
+	movl	%eax, -32(%rbp)
+	movl	-32(%rbp), %eax
+	sarl	$8, %eax
+	movzbl	%al, %eax
+	movl	%eax, %edx
+	leaq	.LC13(%rip), %rcx
+	call	printf
+	movl	-56(%rbp), %eax
+	movl	%eax, -16(%rbp)
+	movl	-16(%rbp), %eax
+	sarl	$8, %eax
+	movzbl	%al, %eax
+	movl	%eax, %edx
+	leaq	.LC13(%rip), %rcx
+	call	printf
+	movl	$0, %eax
+.L34:
+	addq	$96, %rsp
+	popq	%rbp
+	ret
+	.seh_endproc
+	.ident	"GCC: (GNU) 5.4.0"
+	.def	fopen;	.scl	2;	.type	32;	.endef
+	.def	puts;	.scl	2;	.type	32;	.endef
+	.def	strcat;	.scl	2;	.type	32;	.endef
+	.def	fgets;	.scl	2;	.type	32;	.endef
+	.def	write;	.scl	2;	.type	32;	.endef
+	.def	fclose;	.scl	2;	.type	32;	.endef
+	.def	read;	.scl	2;	.type	32;	.endef
+	.def	strlen;	.scl	2;	.type	32;	.endef
+	.def	exit;	.scl	2;	.type	32;	.endef
+	.def	strcpy;	.scl	2;	.type	32;	.endef
+	.def	fprintf;	.scl	2;	.type	32;	.endef
+	.def	fputc;	.scl	2;	.type	32;	.endef
+	.def	printf;	.scl	2;	.type	32;	.endef
+	.def	pipe;	.scl	2;	.type	32;	.endef
+	.def	fork;	.scl	2;	.type	32;	.endef
+	.def	close;	.scl	2;	.type	32;	.endef
+	.def	waitpid;	.scl	2;	.type	32;	.endef
+	.def	perror;	.scl	2;	.type	32;	.endef
